@@ -31,13 +31,6 @@ for raw_site in sites:
     # Webfaction API
     webfaction_api = WebFaction( config.get('webfaction', 'user'), config.get('webfaction', 'pass') )
 
-
-
-
-# TODO: site model for setting up sites
-# TODO: webfaction wordpress method = create app, create website, create domain (and special subdomain)
-# TODO: webfaction google apps method = create all the mx records
-# TODO: #1 sites bluehost method: backup using mysql, tar.bz2
 # TODO: #2 webfactional step: create site... that's it?
 # TODO: #3 final step: bluehost ssh - untar - move db - mysql domain change
 

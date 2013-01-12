@@ -11,6 +11,9 @@ class Site:
 
         self.webfaction_directory = '~/webapps/'+self.name+'/'
     
+    def purple(self,message):
+        return "\033[01;34m"+message+"\033[00m"
+
     def strip_wp_grep(self,result):
         result = result[0]
         result = result.split(", '")[1]
@@ -18,6 +21,9 @@ class Site:
         return result
     
     def backup_bluehost(self,bluehost):
+        
+        print self.purple(">>>>>>>>>>>>>>>>>>>>>>>")+' STEP 1'+self.purple("<<<<<<<<<<<<<<<<<<<<<<<")
+        
         bluehost.cd( self.bluehost_directory )
         
         # Getting the password info
