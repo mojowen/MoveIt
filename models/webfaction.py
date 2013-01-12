@@ -30,6 +30,23 @@ class WebFaction:
         #Create the web site
         self.website = self.server.create_website( self.session_id, name, self.ip_address, False, domains, [name, '/'] )
 
+    def setup_googleapps(self,domain):
+        mx_records = [
+            ['aspmx.l.google.com',1],
+            ['alt1.aspmx.l.google.com',5],
+            ['alt2.aspmx.l.google.com',5],
+            ['aspmx2.googlemail.com',20],
+            ['aspmx3.googlemail.com',20]
+        ]
+        for mx_record in mx_records:
+            self.server.create_dns_override( self.session_id, 
+                domain,
+                '', # An IP Address
+                '', # CNAME
+                mx_record[0],
+                mx_record[1],
+                ''
+            )
         
     # API for interfacing with WebFactions email: 
     # http://docs.webfaction.com/xmlrpc-api/apiref.html#email
