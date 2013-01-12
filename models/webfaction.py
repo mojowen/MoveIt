@@ -1,19 +1,38 @@
-from django.conf import settings
 import xmlrpclib, json
 
 class WebFaction:
 
-    def __init__(self, username=settings.WEBFACTION_USER,password=settings.WEBFACTION_PASSWORD):
+    base_domain = 'scottduncombe.com'
+    ip_address = '75.126.24.81'
+    
+    def __init__(self, username,password):
         
         self.server = xmlrpclib.ServerProxy('https://api.webfaction.com/')
         self.session_id, self.account = self.server.login(username, password)
 
     def list_apps(self):
         print self.server.list_apps( self.session_id)
+    
+    def create_wordpress(self,name,domain=None):
+        
+        self.wordpress_app = self.server.create_app( self.session_id, name, 'wordpress_35',True)
+        
+        domains = [ name+"."+self.base_domain ]
+        
+        # If we pass a domain - then create a domain
+        if domains is not None:
+            domains.append(domain)
+            self.server.create_domain(self.session_id, domain)
+        
+        # Creating a subdomain
+        self.server.create_domain(self.session_id, self.base_domain, name )
+        
+        #Create the web site
+        self.website = self.server.create_website( self.session_id, name, self.ip_address, False, domains, [name, '/'] )
+
         
     # API for interfacing with WebFactions email: 
     # http://docs.webfaction.com/xmlrpc-api/apiref.html#email
-
     def create_forward(self,forwarding_address,forward_to):
         try:
             new_email = self.server.create_email(self.session_id, forwarding_address, forward_to)
