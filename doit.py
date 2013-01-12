@@ -31,7 +31,6 @@ for raw_site in sites:
     # Webfaction API
     webfaction_api = WebFaction( config.get('webfaction', 'user'), config.get('webfaction', 'pass') )
 
-# TODO: #2 webfactional step: create site... that's it?
 # TODO: #3 final step: bluehost ssh - untar - move db - mysql domain change
 
 # BONUS: Create new user on wordpress

@@ -38,3 +38,12 @@ class Site:
         # Backing wp-content all up into tar.bz
         bluehost.c('tar -jcvf backup.tar.bz2 wp-content')
         
+        print self.purple('SUCCESS!!!')
+    
+    def setup_webfaction_site(self,webfaction_api):
+        
+        print self.purple(">>>>>>>>>>>>>>>>>>>>>>>")+' STEP 2'+self.purple("<<<<<<<<<<<<<<<<<<<<<<<")
+        
+        webfaction_api.create_wordpress(self.name,self.domain)
+        
+        print self.purple('SUCCESS!!!')
