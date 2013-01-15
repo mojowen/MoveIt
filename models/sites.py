@@ -74,7 +74,7 @@ class Site:
         webfaction.c(sql)
         
         # Fixing the domain to work with the subdomain
-        fix_domain = ['mysql -u',self.webfaction_mysql_username,'--password='+self.webfaction_mysql_password,'-D '+self.webfaction_mysql_username,'-e','"UPDATE wp_options SET option_value = \'http://busfoundation.scottduncombe.com\' WHERE option_name IN(\'siteurl\',\'home\');"']
+        fix_domain = ['mysql -u',self.webfaction_mysql_username,'--password='+self.webfaction_mysql_password,'-D '+self.webfaction_mysql_username,'-e','"UPDATE wp_options SET option_value = \'http://'+self.name+'.scottduncombe.com\' WHERE option_name IN(\'siteurl\',\'home\');"']
         fix_domain = ' '.join(fix_domain)
         webfaction.c(fix_domain)
         
