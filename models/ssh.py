@@ -41,4 +41,4 @@ class SSH:
             print line.strip()
         
     def close(self):
-        ssh.close()
+        self.client.close()

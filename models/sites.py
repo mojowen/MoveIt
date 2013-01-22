@@ -9,11 +9,17 @@ class Site:
         self.bluehost_directory = '~/public_html/'+args[2]
         self.bluehost_db = args[3]
 
-        self.google_apps = args[5] == 'Google'
-        self.buspress = args[4] is 'T'
-
         self.webfaction_directory = '~/webapps/'+self.name+'/'
-        
+
+        try:
+            self.buspress = args[4] is 'T'
+        except IndexError:
+            self.buspress = False
+
+        try:
+            self.google_apps = args[5] == 'Google'
+        except IndexError:
+            self.google_apps = False
         
         print self.purple(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")+' IMPORTING '+self.name+self.purple("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
         

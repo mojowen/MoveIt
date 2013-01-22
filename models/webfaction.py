@@ -5,10 +5,13 @@ class WebFaction:
     base_domain = 'scottduncombe.com'
     ip_address = '75.126.24.81'
     
-    def __init__(self, username,password):
+    def __init__(self, username,password,base_domain=None):
         
         self.server = xmlrpclib.ServerProxy('https://api.webfaction.com/')
         self.session_id, self.account = self.server.login(username, password)
+
+        if base_domain is not None:
+            self.base_domain = base_domain
 
     def list_apps(self):
         print self.server.list_apps( self.session_id)
@@ -22,7 +25,8 @@ class WebFaction:
         # If we pass a domain - then create a domain
         if domains is not None:
             domains.append(domain)
-            self.server.create_domain(self.session_id, domain)
+            domains.append('www.'+domain)
+            self.server.create_domain(self.session_id, domain,'www')
         
         # Creating a subdomain
         self.server.create_domain(self.session_id, self.base_domain, name )
