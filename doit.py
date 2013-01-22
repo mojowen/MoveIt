@@ -2,12 +2,14 @@ from models.sites import *
 from models.ssh import *
 from models.webfaction import *
 
+# Configruation variables for the various hosts
 from ConfigParser import RawConfigParser
-
 config = RawConfigParser()
 config.read('config/secrets.ini')
 
+# Uses sites.txt to determin which sites to move
 sites = file('config/sites.txt').read().split("\n") # Importing the sites
+
 
 # Webfaction SSH connection
 webfaction = SSH(
@@ -43,4 +45,4 @@ webfaction.close()
 bluehost.close()
 
 # Cleanup and testing a full run
-# BONUS: Create new user on wordpress
+# BONUS: Create new user on wordpress 
