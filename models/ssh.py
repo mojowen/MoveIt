@@ -27,7 +27,12 @@ class SSH:
         if len(error) > 0:
             raise Exception(error)
         else:
-            return stdout.readlines()
+            fixed = []
+
+            for line in stdout.readlines():
+                fixed.append( line.strip() )
+            
+            return fixed
 
     def p(self,command):
         result = self.c(command)
