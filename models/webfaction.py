@@ -42,6 +42,7 @@ class WebFaction:
             ['aspmx2.googlemail.com',20],
             ['aspmx3.googlemail.com',20]
         ]
+        
         for mx_record in mx_records:
             self.server.create_dns_override( self.session_id, 
                 domain,
@@ -49,6 +50,19 @@ class WebFaction:
                 '', # CNAME
                 mx_record[0],
                 mx_record[1],
+                ''
+            )
+        dns_overrides = ['sites','calendar','docs','mail']
+        
+        for override in dns_overrides:
+            subdomain = override+'.'+domain
+            self.server.create_domain(self.session_id, domain,  override)
+            self.server.create_dns_override( self.session_id, 
+                subdomain,
+                '',
+                'ghs.google.com', # CNAME
+                '',
+                '',
                 ''
             )
         
