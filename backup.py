@@ -1,5 +1,9 @@
 #!/usr/bin/python
 
+# This is a script I've got runing - via CRON - on my webfaction sever (that's why it doesn't import )
+# You can run it using the backup.py | mail -E "Subject Line" my-email@hotmail.com command - it'll mail you when there's an error or a backup needed 
+
+
 import commands
 import sys
 
@@ -59,9 +63,9 @@ for site in directories:
             local.c('tar -jcvf '+backup+' wp-content')
             local.c('rm wp-content/db-backup.sql')
         
-            php = "include_once('wp-load.php'); include_once('wp-admin/includes/admin.php'); $updates = get_core_updates(); if( $updates[0]->response != 'latest' ) echo 'upgrade needed'; "
+            php = 'include_once("wp-load.php"); include_once("wp-admin/includes/admin.php"); $updates = get_core_updates(); if( $updates[0]->response != "latest" ) echo "upgrade needed"; '
         
-            upgrade = local.c('php -r "%s" ' % php )
+            upgrade = local.c("php -r '%s' " % php )
         
             if upgrade == 'upgrade needed':
                 output += site+" needs WordPress upgrade \n"
