@@ -1,6 +1,8 @@
 import commands
 
 class Local:
+    
+    base_dir = None
 
     def cd(self,dir):
         self.base_dir = dir
