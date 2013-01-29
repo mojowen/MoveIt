@@ -1,3 +1,9 @@
+# In this script I moved a bunch of recovered backups from my desktop up to new sites in WebFaction
+# > demonstrates using the local class
+# > demonstrates using SCP locally
+#
+# that's about it
+
 from models.sites import *
 from models.ssh import *
 from models.local import *
