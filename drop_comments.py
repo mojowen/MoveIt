@@ -1,3 +1,10 @@
+# In this script I dropped comments from blogs and - if they aren't on my shared theme file - added a plugin. Demonstrates
+#  > Using SSH class to do a mysql command
+#  > Using SSH to do a WordPress/PHP command and using the results (including adding a plugin and checking the theme)
+#  > Using SSH class to scan a directory and determine if they're wordpress
+#
+# YUP!
+
 from models.ssh import *
 
 from ConfigParser import RawConfigParser
