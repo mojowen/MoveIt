@@ -1,8 +1,8 @@
-## Moving Sh*t with PHP!
+## Moving Sh*t with Python!
 
 Hey are you moving shit - especially WordPress shit - between hosts? Want to learn some Python?!?
 
-Well I did. So I wrote a bunch of scripts! These little scripts `doit.py`, `drop_comments.py`, `heller.py`, `backup.py` all use some handy classes to move stuff between two hosts, install / mess with WordPress, and do some other stuff.
+Well I was and I did - so I did! I wrote a bunch of little scripts `doit.py`, `drop_comments.py`, `heller.py`, `backup.py` all use some handy classes to move stuff between two hosts, install / mess with WordPress, and do some other stuff.
 
 I'm going to keep using - and improving on these classes - to do random shit!
 
