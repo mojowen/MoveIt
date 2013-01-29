@@ -6,6 +6,7 @@ class WebFaction:
     base_domain = 'scottduncombe.com'
     ip_address = '75.126.24.81'
     base_directory = None
+    wordpress_install = None
     
     def __init__(self, username,password,base_domain=None):
         
@@ -70,13 +71,35 @@ class WebFaction:
         command = include+command
         
         return self.c("php -r '%s' " % command )
-        
+    
+    def get_latest_wordpress(self):
+        apps = self.server.list_app_types( self.session_id )
+        latest_version = 0
+
+        for app in apps:
+            
+            if app['name'].find('wordpress') != -1:
+
+                try:
+                    version = int(app['name'].split('_')[1])
+                except: # Sometimes has non numerical names - like "wordpress_older"
+                    version = 0
+
+                # Making sure v3.5 > v 3.4.1
+                if version < 100: version = version * 10
+
+                if version > latest_version:
+                    latest_version = version
+                    self.wordpress_install = app['name']
+
     def create_wordpress(self,name,domain=None,admin=False,new_user=False):
         
-        self.wordpress_app = self.server.create_app( self.session_id, name, 'wordpress_351',True)
+        if self.wordpress_install is None: self.get_latest_wordpress()
         
+        self.wordpress_app = self.server.create_app( self.session_id, name, self.wordpress_install,True)
+                
         self.create_site(name,domain)
-        
+                
         self.cd( '~/webapps/%s/' % name )
         
         # - Update admin email / password if requested
