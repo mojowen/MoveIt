@@ -1,9 +1,11 @@
 import xmlrpclib, json
 
+
 class WebFaction:
 
     base_domain = 'scottduncombe.com'
     ip_address = '75.126.24.81'
+    base_directory = None
     
     def __init__(self, username,password,base_domain=None):
         
@@ -16,14 +18,20 @@ class WebFaction:
     def list_apps(self):
         print self.server.list_apps( self.session_id)
     
-    def create_wordpress(self,name,domain=None):
-        
-        self.wordpress_app = self.server.create_app( self.session_id, name, 'wordpress_35',True)
-        
+    def strip_wp_grep(self,result):
+        if type(result) is list:
+            result = result[0]
+
+        result = result.split(", '")[1]
+        result = result.split("'")[0]
+        return result
+
+    
+    def create_site(self,name,domain=None):
         domains = [ name+"."+self.base_domain ]
         
         # If we pass a domain - then create a domain
-        if domains is not None:
+        if domain is not None:
             domains.append(domain)
             domains.append('www.'+domain)
             self.server.create_domain(self.session_id, domain,'www')
@@ -33,6 +41,60 @@ class WebFaction:
         
         #Create the web site
         self.website = self.server.create_website( self.session_id, name, self.ip_address, False, domains, [name, '/'] )
+        
+
+    def create_static(self,name,domain=None):
+        
+        self.wordpress_app = self.server.create_app( self.session_id, name, 'static_php54',False)
+        self.create_site(name,domain)
+        
+    def c(self,command):
+        directory = '';
+        
+        if self.base_directory is not None:
+            directory = 'cd %s;' % self.base_directory
+        
+        return self.server.system( self.session_id, directory+command ).split("\n")
+
+    def cd(self,directory):
+        self.base_directory = directory
+    
+    
+    def sql(self,command,username,password,db):
+        sql = ['mysql -u',username,'--password='+password,'-D '+db,'-e',command]
+        sql = " ".join(sql)
+    
+    def c_wordpress(self,command):
+        include = 'include_once("wp-load.php"); include_once("wp-admin/includes/admin.php"); '
+        
+        command = include+command
+        
+        return self.c("php -r '%s' " % command )
+        
+    def create_wordpress(self,name,domain=None,admin=False,new_user=False):
+        
+        self.wordpress_app = self.server.create_app( self.session_id, name, 'wordpress_351',True)
+        
+        self.create_site(name,domain)
+        
+        self.cd( '~/webapps/%s/' % name )
+        
+        # - Update admin email / password if requested
+        if admin:
+            update_user = 'wp_update_user( array ("ID" => 1, "user_email" => "'+admin["email"]+'") ); wp_set_password("'+admin["password"]+'",1);'
+            self.c_wordpress(update_user)
+
+        # TO DO:
+        # - them as a new user (usersname, email, password as random, md5 a password reset into user_activation_key and then give them a link to login) - see wp-login.php
+        # if new_user:
+        #     create_new_user = 'wp_create_user( '+new_user["username"]+', '+new_user["password"]+', '+new_user["email"]+' );'
+        # - TURN OFF no indexing for new sites
+        # - "ln -s usefulplugins" and then add them to wp
+        # - install Jolokia? maybe... 'cp -R ~/shared/BusPress/Jolokia wp-content/themes/jolokia'
+
+        # Don't need this yet, can just do everything through WordPress
+        # password = self.strip_wp_grep( self.c('grep DB_PASSWORD wp-config.php' ) )
+        # username = self.strip_wp_grep( self.c('grep DB_USER wp-config.php' ) )
 
     def setup_googleapps(self,domain):
         mx_records = [
