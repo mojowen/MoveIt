@@ -26,6 +26,14 @@ class Site:
     def purple(self,message):
         return "\033[01;34m"+message+"\033[00m"
 
+    def local_backup(self,local,bluehost_ssh):
+        print self.purple(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")+' STEP 2 '+self.purple("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+        
+        local.cd('~/Projects/move_it/backup')
+        local.c('mkdir '+self.name)
+        local.cd('~/Projects/move_it/backup/'+self.name )
+        print local.c('scp -r '+bluehost_ssh+':'+self.bluehost_directory+'wp-content/ .' )
+        
     def strip_wp_grep(self,result):
         result = result[0]
         result = result.split(", '")[1]
