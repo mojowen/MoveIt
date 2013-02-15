@@ -1,9 +1,11 @@
-import xmlrpclib, json
+import xmlrpclib, json, time
+
 
 
 class WebFaction:
-
+    
     base_domain = 'scottduncombe.com'
+    base_account = 'mojowen'
     ip_address = '75.126.24.81'
     base_directory = None
     wordpress_install = None
@@ -15,7 +17,7 @@ class WebFaction:
 
         if base_domain is not None:
             self.base_domain = base_domain
-
+        
     def list_apps(self):
         print self.server.list_apps( self.session_id)
     
@@ -29,6 +31,8 @@ class WebFaction:
 
     
     def create_site(self,name,domain=None):
+        name = name.replace('_','') # Subdomains can't have underscore
+        
         domains = [ name+"."+self.base_domain ]
         
         # If we pass a domain - then create a domain
@@ -91,6 +95,39 @@ class WebFaction:
                 if version > latest_version:
                     latest_version = version
                     self.wordpress_install = app['name']
+    
+    def create_user(self,name,password):
+        self.server.create_user( self.session_id, name,'bash',['mojowen'] )
+
+        self.server.change_user_password( self.session_id, name, password)
+        
+        time.sleep(10) # Hang out for a sec till the password is set for the SSH account
+
+        # Setting up the user account
+        from models.ssh import SSH 
+        user = SSH(self.base_domain, name, password)
+        user.c('chmod 771 .')
+        user.c('mkdir webapps')
+        user.c('setfacl -R -m d:u:'+self.base_account+':rwx .')
+        user.close()
+
+        self.c('setfacl -m u:%s:--- $HOME/webapps/*' % name)
+
+    def assign_app(self,app,user):
+
+        project_dir = '$HOME/webapps/'+app
+
+        self.cd(project_dir)
+        self.c('setfacl -R -m u:'+user+':rwx ' +project_dir) # This command grants the other user read, write, and execute access to all files and directories within the application.
+        self.c('setfacl -R -m d:u:'+user+':rwx ' +project_dir ) #  This command makes all new files in the application directory and its subdirectories have the same permissions by default.
+        self.c('chmod -R g+s '+project_dir) # can change things
+        self.c('setfacl -R -m d:u:'+self.base_account+':rwx '+project_dir) # This command allows the primary user to continue to have full access to files, even if they're created by the secondary user.
+
+        self.cd('/home/'+user+'/webapps/')
+        self.c('ln -s '+project_dir+' %s '%app) # moving in a project
+
+
+
 
     def create_wordpress(self,name,domain=None,admin=False,new_user=False):
         
@@ -156,7 +193,7 @@ class WebFaction:
                 '',
                 ''
             )
-        
+     
     # API for interfacing with WebFactions email: 
     # http://docs.webfaction.com/xmlrpc-api/apiref.html#email
     def create_forward(self,forwarding_address,forward_to):
