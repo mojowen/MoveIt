@@ -18,10 +18,10 @@ from models.webfaction import *
 # Configruation variables for the various hosts
 from ConfigParser import RawConfigParser
 config = RawConfigParser()
-config.read('config/secrets.ini')
+config.read('../config/secrets.ini')
 
 # Uses sites.txt to determin which sites to move
-sites = file('config/sites.txt').read().split("\n") # Importing the sites
+sites = file('../config/sites.txt').read().split("\n") # Importing the sites
 
 
 # Webfaction SSH connection

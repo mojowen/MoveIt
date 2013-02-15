@@ -1,8 +1,7 @@
 #!/usr/bin/python
 
-# This is a script I've got runing - via CRON - on my webfaction sever (that's why it doesn't import )
+# This is a script I've got runing - via CRON - on my webfaction sever (that's why it doesn't import Local)
 # You can run it using the backup.py | mail -E "Subject Line" my-email@hotmail.com command - it'll mail you when there's an error or a backup needed 
-
 
 import commands
 import sys

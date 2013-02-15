@@ -9,7 +9,7 @@ from models.ssh import *
 
 from ConfigParser import RawConfigParser
 config = RawConfigParser()
-config.read('config/secrets.ini')
+config.read('../config/secrets.ini')
 
 
 wf = SSH(

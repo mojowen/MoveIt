@@ -12,7 +12,7 @@ from models.webfaction import *
 # Configruation variables for the various hosts
 from ConfigParser import RawConfigParser
 config = RawConfigParser()
-config.read('config/secrets.ini')
+config.read('../config/secrets.ini')
 import commands
 
 def strip_wp_grep(result):
@@ -21,7 +21,7 @@ def strip_wp_grep(result):
     return result
 
 # Uses sites.txt to determin which sites to move
-sites = file('config/hellersites.txt').read().split("\n") # Importing the sites
+sites = file('../config/hellersites.txt').read().split("\n") # Importing the sites
 
 webfaction_api = WebFaction( config.get('webfaction-heller', 'user'), config.get('webfaction-heller', 'pass'),config.get('webfaction-heller', 'domain') )
 
