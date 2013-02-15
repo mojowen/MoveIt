@@ -178,3 +178,11 @@ class WebFaction:
 
     def delete_forward(self, forwarding_address):
         return self.server.delete_email(self.session_id, forwarding_address)
+
+    def bulk_create_forwards(self,block):
+        blocks = block.split("\n")
+
+        for block in blocks:
+            forward = block.split("\t")
+            self.create_forward( forward[0], forward[1] )
+            print "forwarding "+forward[0]+' to '+forward[1]
