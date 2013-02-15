@@ -102,6 +102,12 @@ class WebFaction:
                 
         self.cd( '~/webapps/%s/' % name )
         
+        self.c_wordpress('update_option("siteurl","http://'+name+"."+self.base_domain+'"); update_option("home","http://'+name+"."+self.base_domain+'");' )
+
+
+        # Do something about permalinks
+        # Do something about visiability to search engines
+        
         # - Update admin email / password if requested
         if admin:
             update_user = 'wp_update_user( array ("ID" => 1, "user_email" => "'+admin["email"]+'") ); wp_set_password("'+admin["password"]+'",1);'
