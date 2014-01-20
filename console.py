@@ -15,12 +15,19 @@ def reloader(module):
 	import models
 	exec( 'reload(models.%s)' % module)
 	exec( 'from models.%s import *' % module)
-	
-	if module == 'webfactoin':
+
+	if module == 'webfaction':
 		wf = WebFaction( config.get('webfaction', 'user'), config.get('webfaction', 'pass') )
 
 
 wf = WebFaction( config.get('webfaction', 'user'), config.get('webfaction', 'pass') )
-wf_ssh = SSH( config.get('webfaction-ssh', 'domain'), config.get('webfaction-ssh', 'user'), config.get('webfaction-ssh', 'pass') )
+wf.set_default_wordpress_admin( config.get('default-wordpress', 'email'), config.get('default-wordpress', 'password') )
+# ssh = SSH( config.get('webfaction-ssh', 'domain'), config.get('webfaction-ssh', 'user'), config.get('webfaction-ssh', 'pass') )
 
 
+import readline # optional, will allow Up/Down/History in the console
+import code
+vars = globals().copy()
+vars.update(locals())
+shell = code.InteractiveConsole(vars)
+shell.interact()
