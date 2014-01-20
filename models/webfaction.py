@@ -30,16 +30,18 @@ Commands:
         '''
 
     def __init__(self, username,password,base_domain=None):
-        
+
         self.server = xmlrpclib.ServerProxy('https://api.webfaction.com/')
         self.session_id, self.account = self.server.login(username, password)
 
         if base_domain is not None:
             self.base_domain = base_domain
-        
+
     def list_apps(self):
-        print self.server.list_apps( self.session_id)
-    
+        apps = self.server.list_apps( self.session_id)
+        for app in apps:
+            print "%r" % app
+
     def strip_wp_grep(self,result):
         if type(result) is list:
             result = result[0]
