@@ -3,13 +3,32 @@ import xmlrpclib, json, time
 
 
 class WebFaction:
-    
+
     base_domain = 'scottduncombe.com'
     base_account = 'mojowen'
     ip_address = '75.126.24.81'
     base_directory = None
     wordpress_install = None
-    
+    default_wordpress_admin = False
+
+    def help(self):
+        print self
+    def __str__(self):
+        return '''
+Commands:
+\tSITES:
+\t\t- list_apps
+\t\t- create_site name,domain=None
+\t\t- create_static name,doman=None
+\t\t- create_wordpress name, domain=None
+\tUSERS:
+\t\t- list_users
+\t\t- create_user name, password
+\t\t- assign_app app, user
+\t\t- create_forward forwarding_address, forward_to
+\t\t- update_forward forwarding_address, forward_to
+        '''
+
     def __init__(self, username,password,base_domain=None):
         
         self.server = xmlrpclib.ServerProxy('https://api.webfaction.com/')
