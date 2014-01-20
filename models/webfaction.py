@@ -116,7 +116,11 @@ Commands:
                 if version > latest_version:
                     latest_version = version
                     self.wordpress_install = app['name']
-    
+
+    def list_users(self):
+        users = self.server.list_users( self.session_id)
+        for user in users:
+            print "%r" % user
     def create_user(self,name,password):
         self.server.create_user( self.session_id, name,'bash',['mojowen'] )
 
