@@ -21,6 +21,7 @@ Commands:
 \t\t- create_site name,domain=None
 \t\t- create_static name,doman=None
 \t\t- create_wordpress name, domain=None
+\t\t- setup_googleapps domain
 \tUSERS:
 \t\t- list_users
 \t\t- create_user name, password
