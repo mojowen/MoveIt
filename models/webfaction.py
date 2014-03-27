@@ -177,7 +177,7 @@ Commands:
         if not admin and self.default_wordpress_admin: admin = self.default_wordpress_admin
 
         if admin:
-            update_user = 'wp_update_user( array ("user_login" => "%s", ID" => 1, "user_email" => "%s") ); wp_set_password("%s",1);' % (admin["username"], admin["email"], admin["password"])
+            update_user = '$wpdb->update($wpdb->users, array ("user_login" => "%s", "user_email" => "%s"), array( "ID" => 1 ) ); wp_set_password("%s",1);' % (admin["username"], admin["email"], admin["password"])
             self.c_wordpress(update_user)
 
         # TO DO:
