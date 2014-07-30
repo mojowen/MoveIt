@@ -154,7 +154,7 @@ Commands:
 
 
 
-    def set_default_wordpress_admin(self,email,password, username='admins'):
+    def set_default_wordpress_admin(self,email, password, username='admin'):
         self.default_wordpress_admin = { "email": email, "password": password, 'username': username }
 
     def create_wordpress(self,name,domain=None,admin=False,new_user=False):

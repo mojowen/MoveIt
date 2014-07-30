@@ -21,7 +21,7 @@ def reloader(module):
 
 
 wf = WebFaction( config.get('webfaction', 'user'), config.get('webfaction', 'pass') )
-wf.set_default_wordpress_admin( config.get('default-wordpress', 'email'), config.get('default-wordpress', 'password') )
+wf.set_default_wordpress_admin( config.get('default-wordpress', 'email'), config.get('default-wordpress', 'password'), username=config.get('default-wordpress', 'username') )
 # ssh = SSH( config.get('webfaction-ssh', 'domain'), config.get('webfaction-ssh', 'user'), config.get('webfaction-ssh', 'pass') )
 
 
