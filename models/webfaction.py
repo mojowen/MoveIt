@@ -21,6 +21,7 @@ Commands:
 \t\t- create_site name,domain=None
 \t\t- create_static name,doman=None
 \t\t- create_wordpress name, domain=None
+\t\t- setup_googleapps domain
 \tUSERS:
 \t\t- list_users
 \t\t- create_user name, password
@@ -153,8 +154,8 @@ Commands:
 
 
 
-    def set_default_wordpress_admin(self,email,password):
-        self.default_wordpress_admin = { "email": email, "password": password }
+    def set_default_wordpress_admin(self,email, password, username='admin'):
+        self.default_wordpress_admin = { "email": email, "password": password, 'username': username }
 
     def create_wordpress(self,name,domain=None,admin=False,new_user=False):
 
@@ -176,7 +177,7 @@ Commands:
         if not admin and self.default_wordpress_admin: admin = self.default_wordpress_admin
 
         if admin:
-            update_user = 'wp_update_user( array ("user_login" => "srdmin", ID" => 1, "user_email" => "'+admin["email"]+'") ); wp_set_password("'+admin["password"]+'",1);'
+            update_user = '$wpdb->update($wpdb->users, array ("user_login" => "%s", "user_email" => "%s"), array( "ID" => 1 ) ); wp_set_password("%s",1);' % (admin["username"], admin["email"], admin["password"])
             self.c_wordpress(update_user)
 
         # TO DO:
