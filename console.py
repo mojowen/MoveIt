@@ -1,10 +1,6 @@
-#!/usr/local/bin/python
-
-#  This is a script used to test stuff in the console... that's about it.
-
-from models.sites import *
-from models.ssh import *
-from models.webfaction import *
+from models.sites import Site
+from models.ssh import SSH
+from models.webfaction import WebFaction
 
 
 from ConfigParser import RawConfigParser
