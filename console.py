@@ -2,7 +2,6 @@ from models.sites import Site
 from models.ssh import SSH
 from models.webfaction import WebFaction
 
-
 from ConfigParser import RawConfigParser
 config = RawConfigParser()
 config.read('config/secrets.ini')

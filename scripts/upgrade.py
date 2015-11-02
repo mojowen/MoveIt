@@ -14,17 +14,9 @@ def strip_wp_grep(result):
 local = Local()
 local.cd('~/webapps')
 
-try:
-    type_of_backup = sys.argv[1]
-except:
-    type_of_backup = 'daily'
-
-directory = '~/backup/'+type_of_backup+'/'
-
 directories = local.c('ls').split("\n")
 
 for site in directories:
-
     try:
         local.cd('~/webapps/'+site)
         is_wordpress = local.c('ls wp-config.php') == 'wp-config.php'
