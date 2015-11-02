@@ -15,16 +15,16 @@ class WebFaction:
         print self
 
     def __repr__(self):
-        self.__str__()
+        return self.__str__()
 
     def __str__(self):
-        return '''
-Commands:
+        return '''Commands:
 \tSITES:
 \t\t- list_apps
 \t\t- create_site name,domain=None
 \t\t- create_static name,doman=None
 \t\t- create_wordpress name, domain=None
+\t\t- create_buspress name, domain
 \t\t- setup_googleapps domain
 \tUSERS:
 \t\t- list_users
@@ -156,8 +156,6 @@ Commands:
         self.cd('/home/'+user+'/webapps/')
         self.c('ln -s '+project_dir+' %s '%app) # moving in a project
 
-
-
     def set_default_wordpress_admin(self,email, password, username='admin'):
         self.default_wordpress_admin = { "email": email, "password": password, 'username': username }
 
@@ -178,7 +176,8 @@ Commands:
         # Do something about visiability to search engines
 
         # - Update admin email / password if requested
-        if not admin and self.default_wordpress_admin: admin = self.default_wordpress_admin
+        if not admin and self.default_wordpress_admin
+            admin = self.default_wordpress_admin
 
         if admin:
             update_user = '$wpdb->update($wpdb->users, array ("user_login" => "%s", "user_email" => "%s"), array( "ID" => 1 ) ); wp_set_password("%s",1);' % (admin["username"], admin["email"], admin["password"])
@@ -195,6 +194,16 @@ Commands:
         # Don't need this yet, can just do everything through WordPress
         # password = self.strip_wp_grep( self.c('grep DB_PASSWORD wp-config.php' ) )
         # username = self.strip_wp_grep( self.c('grep DB_USER wp-config.php' ) )
+
+    def create_buspress(self, name, domain=None):
+        self.create_wordpress(name, domain)
+        self.assign_app(name, 'bus')
+
+        self.c('cp -r ~/shared/BusPress/jolokia ~/webapps/%s/wp-content/themes' % name)
+        self.c('ln -s ~/shared/ng-forms ~/webapps/%s/wp-content/plugins/ng-forms' % name)
+
+        if domain:
+            self.setup_googleapps(domain)
 
     def setup_googleapps(self,domain):
         mx_records = [
