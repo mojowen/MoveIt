@@ -5,7 +5,7 @@
 
 import commands
 import sys
-from models import local
+from models import Local
 
 def strip_wp_grep(result):
     if type(result) is list:
