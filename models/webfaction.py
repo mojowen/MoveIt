@@ -13,6 +13,10 @@ class WebFaction:
 
     def help(self):
         print self
+
+    def __repr__(self):
+        self.__str__()
+
     def __str__(self):
         return '''
 Commands:
