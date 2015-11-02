@@ -13,7 +13,7 @@ if [ -f "$ACTIVE_DIR/wp-config.php" ]; then
 	mv $ACTIVE_DIR/wp-config.php $HOME/$WEBAPP-wp-config.php
 	rm -rf $ACTIVE_DIR/*
 
-    # Download Wordpress
+    # Download Wordpress and wipe home directory
 	wget https://wordpress.org/latest.zip
 	unzip latest.zip
 	mv $ACTIVE_DIR/wordpress/* $ACTIVE_DIR
@@ -26,6 +26,8 @@ if [ -f "$ACTIVE_DIR/wp-config.php" ]; then
 	mv $HOME/$WEBAPP-wp-config.php $ACTIVE_DIR/wp-config.php
 
 	# Running other scripts
+	php $HOME/MoveIt/scripts/plugin_restore.php all
+	php $HOME/MoveIt/scripts/theme_restore.php
 	remove_uploads $WEBAPP
 	restore_jolokia $WEBAPP
 else

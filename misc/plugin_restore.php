@@ -40,9 +40,9 @@ if( $argv[1] == 'all' ) {
 
 foreach($plugins as $plugin_dir => $plugin_details) {
 	if( isset($current[$plugin_dir]) ) {
-		$current[$plugin_dir] = (object) $current[$plugin_dir];
+		$plugin = (object) $current[$plugin_dir];
 		$result = $upgrader->run( array(
-			'package' => $current[$plugin_dir]->package,
+			'package' => $plugin->package,
 			'destination' => WP_PLUGIN_DIR,
 			'clear_destination' => true,
 			'clear_working' => true,

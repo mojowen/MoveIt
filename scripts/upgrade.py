@@ -28,13 +28,13 @@ for site in directories:
 
         if is_wordpress:
             # Upgrade wordpress
-            local.c("php ~/MoveIt/misc/upgrade_wordpress.php")
+            local.c("php ~/MoveIt/misc/wordpress_upgrade.php")
 
             # Upgrade plugins
             upgrade = local.c("php ~/MoveIt/misc/plugin_restore.php")
 
             # Upgrade themes
-            upgrade = local.c("php ~/MoveIt/misc/theme_restore.php")
+            upgrade = local.c("php ~/MoveIt/misc/theme_upgrade.php")
 
             print "Upgraded %s\n" % site
         else:
