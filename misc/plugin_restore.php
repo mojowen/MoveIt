@@ -19,31 +19,36 @@ if( $argv[1] == 'all' ) {
 	https://github.com/WordPress/WordPress/blob/master/wp-includes/update.php#L280-L304
 	*/
 
+	$active  = get_option( 'active_plugins', array() );
+
 	$options = array(
-		'body' => array( 'plugins' => wp_json_encode( compact('plugins') ) ),
+		'body' => array(
+			'plugins' => wp_json_encode( compact( 'plugins', 'active' ) ),
+			'all' => wp_json_encode( true ),
+		),
 		'user-agent' => 'WordPress/'.$wp_version.'; '. get_bloginfo( 'url' )
 	);
 
 	$url = 'https://api.wordpress.org/plugins/update-check/1.1/';
 	$raw_response = wp_remote_post( $url, $options );
 	$response = json_decode( wp_remote_retrieve_body( $raw_response ), true );
-	$current = $response['plugins']
+	$current = array_merge($response['plugins'], $response['no_update']);
 } else {
 	$current = get_site_transient('update_plugins');
+	$current = $current->response;
 }
 
 foreach($plugins as $plugin_dir => $plugin_details) {
-	if( isset($current->response[$plugin_dir]) ) {
-
+	if( isset($current[$plugin_dir]) ) {
+		$current[$plugin_dir] = (object) $current[$plugin_dir];
 		$result = $upgrader->run( array(
-			'package' => $current->response[$plugin_dir]->package,
+			'package' => $current[$plugin_dir]->package,
 			'destination' => WP_PLUGIN_DIR,
 			'clear_destination' => true,
 			'clear_working' => true,
 			'hook_extra' => array( 'plugin' => $plugin_dir )
 		));
-
-		echo "Updated ".$plugin_dir;
+		echo "Updated {$plugin_dir}\n";
 	}
 
 }
