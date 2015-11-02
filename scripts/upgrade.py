@@ -2,7 +2,12 @@
 
 import commands
 import sys
-from models import Local
+import os
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__),
+	os.path.pardir)))
+
+from models.local import Local
 
 def strip_wp_grep(result):
     if type(result) is list:
