@@ -1,0 +1,8 @@
+#!/bin/sh
+
+CURRENT_DIR=${PWD##*/}
+WEBAPP=${1:-$CURRENT_DIR}
+ACTIVE_DIR=$HOME/webapps/$WEBAPP/wp-content/uploads
+
+echo "Removing upload contaminate for $WEBAPP"
+find -name '*.php' -delete $ACTIVE_DIR

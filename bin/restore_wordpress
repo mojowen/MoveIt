@@ -1,0 +1,34 @@
+#!/bin/sh
+
+CURRENT_DIR=${PWD##*/}
+WEBAPP=${1:-$CURRENT_DIR}
+ACTIVE_DIR=$HOME/webapps/$WEBAPP
+
+if [ -f "$ACTIVE_DIR/wp-config.php" ]; then
+	cd $ACTIVE_DIR
+	echo "Restoring $WEBAPP"
+
+    # Backing up content
+	mv $ACTIVE_DIR/wp-content $HOME/$WEBAPP-wp-content
+	mv $ACTIVE_DIR/wp-config.php $HOME/$WEBAPP-wp-config.php
+	rm -rf $ACTIVE_DIR/*
+
+    # Download Wordpress
+	wget https://wordpress.org/latest.zip
+	unzip latest.zip
+	mv $ACTIVE_DIR/wordpress/* $ACTIVE_DIR
+	rm $ACTIVE_DIR/latest.zip
+	rm -r $ACTIVE_DIR/wordpress
+
+    # Restoring Content
+	rm -rf $ACTIVE_DIR/wp-content
+	mv $HOME/$WEBAPP-wp-content $ACTIVE_DIR/wp-content
+	mv $HOME/$WEBAPP-wp-config.php $ACTIVE_DIR/wp-config.php
+
+	# Running other scripts
+	remove_uploads $WEBAPP
+	restore_jolokia $WEBAPP
+else
+	echo "WordPress App not detected"
+fi
+
