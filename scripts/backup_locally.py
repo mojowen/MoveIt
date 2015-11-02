@@ -38,9 +38,9 @@ for raw_site in sites:
     site = Site(raw_site)
 
     site.backup_bluehost(bluehost)
-        
+
     site.local_backup(local,config.get('bluehost-ssh', 'user')+'@'+config.get('bluehost-ssh', 'domain'))
-    
+
 
 
 bluehost.close()

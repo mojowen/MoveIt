@@ -2,7 +2,7 @@
 # Things that could be better:
 #   > I search the content and overwrite most mentions of the local_url in the content EXCEPT FOR WIDGETS
 #   > It's pretty slow! This is shitty. Maybe I need to use git and some sort of diffing. Hmm
-#   > 
+#   >
 
 
 import sys
@@ -71,18 +71,18 @@ for upload in uploads:
 
     if len(upload_clean) > 1:
         upload_clean = upload_clean[0]
-        
+
         upload_info = {}
         upload_info['year'] = upload_clean.split('/')[0]
         upload_info['month'] = upload_clean.split('/')[1]
         upload_info['file'] = upload_clean.split('/')[2]
         upload_info['filename'] = upload_info['file'].split('.')[0]
-    
+
         local.c('mkdir wp-deploy/uploads/%(year)s' % upload_info )
         local.c('mkdir wp-deploy/uploads/%(year)s/%(month)s' % upload_info )
-    
+
         upload_info['dir'] = 'wp-deploy/uploads/%(year)s/%(month)s/' % upload_info
-    
+
         local.c('cp wp-content/uploads/%(year)s/%(month)s/%(filename)s* %(dir)s' % upload_info )
 
 

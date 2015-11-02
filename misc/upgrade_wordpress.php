@@ -1,14 +1,12 @@
-<?php 
-// ALWAYS USE DOUBLE BRACKETS """"""""" ONLY
+<?php
 
-// Always include this
-include_once("wp-load.php"); include_once("wp-admin/includes/admin.php"); 
+include_once("wp-load.php");
+include_once("wp-admin/includes/admin.php");
 
-// change email / password
-wp_update_user( array ("ID" => 1, "email" => "srduncombe@gmail.com") ); wp_set_password("stinging",1);
+$updates = get_core_updates();
 
-// For updating
-$updates = get_core_updates(); if( $updates[0]->response != "latest" ) wp_update_core($updates[0]);
-
+if( $updates[0]->response != "latest" ) {
+	wp_update_core($updates[0]);
+}
 
 ?>
