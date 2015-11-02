@@ -22,7 +22,15 @@ for site in directories:
         is_wordpress = local.c('ls wp-config.php') == 'wp-config.php'
 
         if is_wordpress:
-            upgrade = local.c("php ~/MoveIt/misc/upgrade_wordpress.php")
+            # Upgrade wordpress
+            local.c("php ~/MoveIt/misc/upgrade_wordpress.php")
+
+            # Upgrade plugins
+            upgrade = local.c("php ~/MoveIt/misc/plugin_restore.php")
+
+            # Upgrade themes
+            upgrade = local.c("php ~/MoveIt/misc/theme_restore.php")
+
             print "Upgraded %s\n" % site
         else:
             print "Skipping %s\n" % site
