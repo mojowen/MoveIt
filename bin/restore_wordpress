@@ -11,6 +11,7 @@ if [ -f "$ACTIVE_DIR/wp-config.php" ]; then
     # Backing up content
 	mv $ACTIVE_DIR/wp-content $HOME/$WEBAPP-wp-content
 	mv $ACTIVE_DIR/wp-config.php $HOME/$WEBAPP-wp-config.php
+	mv $ACTIVE_DIR/.htaccess $HOME/$WEBAPP-htaccess
 	rm -rf $ACTIVE_DIR/*
 
     # Download Wordpress and wipe home directory
@@ -24,12 +25,13 @@ if [ -f "$ACTIVE_DIR/wp-config.php" ]; then
 	rm -rf $ACTIVE_DIR/wp-content
 	mv $HOME/$WEBAPP-wp-content $ACTIVE_DIR/wp-content
 	mv $HOME/$WEBAPP-wp-config.php $ACTIVE_DIR/wp-config.php
+	mv $HOME/$WEBAPP-htaccess $ACTIVE_DIR/.htaccess
 
 	# Running other scripts
-	php $HOME/MoveIt/scripts/plugin_restore.php all
-	php $HOME/MoveIt/scripts/theme_restore.php
+	php $HOME/MoveIt/misc/plugin_restore.php all
+	php $HOME/MoveIt/misc/theme_restore.php
 	remove_uploads $WEBAPP
-	restore_jolokia $WEBAPP
+	fix_jolokia $WEBAPP
 else
 	echo "WordPress App not detected"
 fi
