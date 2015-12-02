@@ -1,0 +1,17 @@
+#!/bin/sh
+
+CURRENT_DIR=${PWD##*/}
+BACKUP=${1:-daily}
+WEBAPP=${2:-$CURRENT_DIR}
+ACTIVE_DIR=$HOME/webapps/$WEBAPP
+BACKUP_FILE=$HOME/backup/$BACKUP/$WEBAPP.tar.bz2
+
+if [ -f "$ACTIVE_DIR/wp-config.php" ]; then
+	restore_wordpress $WEBAPP
+	rm -rf $ACTIVE_DIR/wp-content
+fi
+
+cp $BACKUP_FILE $ACTIVE_DIR/backup.tar.bz2
+tar xvfj $ACTIVE_DIR/backup.tar.bz2
+rm $ACTIVE_DIR/backup.tar.bz2
+
