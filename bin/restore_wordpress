@@ -8,10 +8,16 @@ if [ -f "$ACTIVE_DIR/wp-config.php" ]; then
 	cd $ACTIVE_DIR
 	echo "Restoring $WEBAPP"
 
-    # Backing up content
+	# Clense wp-config.php just in case
+	sed -i '1s/.*/<?php /' wp-config.php
+
+	# Backing up content
 	mv $ACTIVE_DIR/wp-content $HOME/$WEBAPP-wp-content
 	mv $ACTIVE_DIR/wp-config.php $HOME/$WEBAPP-wp-config.php
 	mv $ACTIVE_DIR/.htaccess $HOME/$WEBAPP-htaccess
+	if [ -f $ACTIVE_DIR/php53.cgi ]; then
+		mv $ACTIVE_DIR/php53.cgi $HOME/$WEBAPP-php53.cgi
+	fi
 	rm -rf $ACTIVE_DIR/*
 
     # Download Wordpress and wipe home directory
@@ -26,10 +32,16 @@ if [ -f "$ACTIVE_DIR/wp-config.php" ]; then
 	mv $HOME/$WEBAPP-wp-content $ACTIVE_DIR/wp-content
 	mv $HOME/$WEBAPP-wp-config.php $ACTIVE_DIR/wp-config.php
 	mv $HOME/$WEBAPP-htaccess $ACTIVE_DIR/.htaccess
+	if [ -f $HOME/$WEBAPP-php53.cgi ]; then
+		mv $HOME/$WEBAPP-php53.cgi $ACTIVE_DIR/php53.cgi
+	fi
 
 	# Running other scripts
 	php $HOME/MoveIt/misc/plugin_restore.php all
-	php $HOME/MoveIt/misc/theme_restore.php
+	php $HOME/MoveIt/misc/theme_upgrade.php
+	echo "<?php\n// Silence is golden.\n?>" > $ACTIVE_DIR/wp-content/index.php
+	echo "<?php\n// Silence is golden.\n?>" > $ACTIVE_DIR/wp-content/plugins/index.php
+	echo "<?php\n// Silence is golden.\n?>" > $ACTIVE_DIR/wp-content/themes/index.php
 	remove_uploads $WEBAPP
 	fix_jolokia $WEBAPP
 else
