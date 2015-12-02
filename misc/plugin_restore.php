@@ -39,8 +39,8 @@ if( $argv[1] == 'all' ) {
 }
 
 foreach($plugins as $plugin_dir => $plugin_details) {
-	$plugin_dir = untrailingslashit(WP_PLUGIN_DIR .'/'. plugin_dir_path($plugin_dir));
-	if( isset($current[$plugin_dir]) && ! is_link($plugin_dir) ) {
+	$plugin_directory = untrailingslashit(WP_PLUGIN_DIR .'/'. plugin_dir_path($plugin_dir));
+	if( isset($current[$plugin_dir]) && ! is_link($plugin_directory) ) {
 		$plugin = (object) $current[$plugin_dir];
 		$result = $upgrader->run( array(
 			'package' => $plugin->package,
@@ -51,7 +51,7 @@ foreach($plugins as $plugin_dir => $plugin_details) {
 		));
 		echo "Updated {$plugin_dir}\n";
 	} else {
-		$reason = is_link($plugin_dir) ? "it's a sym link" : "can't find source";
+		$reason = is_link($plugin_directory) ? "it's a sym link" : "can't find source";
 		echo "Skipping {$plugin_dir} - {$reason}\n";
 	}
 

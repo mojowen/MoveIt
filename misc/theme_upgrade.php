@@ -9,7 +9,7 @@ $themes = wp_get_themes();
 $current = get_site_transient('update_themes');
 $upgrader = new WP_Upgrader();
 
-foreach($plugins as $plugin_dir => $plugin_details) {
+foreach($themes as $plugin_dir => $plugin_details) {
 	if( isset($current->response[$plugin_dir]) ) {
 
 		$upgrader->run( array(
