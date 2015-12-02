@@ -1,0 +1,12 @@
+#!/bin/sh
+
+CURRENT_DIR=${PWD##*/}
+WEBAPP=${1:-$CURRENT_DIR}
+WP_CONFIG=$HOME/webapps/$WEBAPP/wp-config.php
+
+DATABASE=$(grep "define('DB_NAME', '.*');" wp-config.php | awk '{split($0,a," "); print a[2];}' | sed "s/[^a-zA-Z0-9_]//g")
+DB_USER=$(grep "define('DB_USER', '.*');" wp-config.php | awk '{split($0,a," "); print a[2];}' | sed "s/[^a-zA-Z0-9_]//g")
+DB_PASS=$(grep "define('DB_PASSWORD', '.*');" wp-config.php | awk '{split($0,a," "); print a[2];}' | sed "s/[^a-zA-Z0-9_]//g")
+
+# echo "mysql --user=$DB_USER --password=$DB_PASS $DATABASE"
+mysql --user=$DB_USER --password=$DB_PASS $DATABASE
