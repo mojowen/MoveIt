@@ -37,11 +37,12 @@ if [ -f "$ACTIVE_DIR/wp-config.php" ]; then
 	fi
 
 	# Running other scripts
+	find $ACTIVE_DIR/wp-content -maxdepth 1 -name '*.php' -delete
 	php $HOME/MoveIt/misc/plugin_restore.php all
 	php $HOME/MoveIt/misc/theme_upgrade.php
-	echo "<?php\n// Silence is golden.\n?>" > $ACTIVE_DIR/wp-content/index.php
-	echo "<?php\n// Silence is golden.\n?>" > $ACTIVE_DIR/wp-content/plugins/index.php
-	echo "<?php\n// Silence is golden.\n?>" > $ACTIVE_DIR/wp-content/themes/index.php
+	echo -e "<?php\n// Silence is golden.\n?>" > $ACTIVE_DIR/wp-content/index.php
+	echo -e "<?php\n// Silence is golden.\n?>" > $ACTIVE_DIR/wp-content/plugins/index.php
+	echo -e "<?php\n// Silence is golden.\n?>" > $ACTIVE_DIR/wp-content/themes/index.php
 	remove_uploads $WEBAPP
 	fix_jolokia $WEBAPP
 else
