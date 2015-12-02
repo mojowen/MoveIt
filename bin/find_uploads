@@ -1,0 +1,3 @@
+#!/bin/sh
+
+find /home/mojowen/webapps/*/wp-content/uploads -name '*.php'
