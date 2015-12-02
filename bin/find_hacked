@@ -1,0 +1,10 @@
+#!/bin/sh
+
+CURRENT_DIR=.
+SEARCH_DIR=${1:-$CURRENT_DIR}
+MIN_LENGTH=${2:-10000}
+
+find $SEARCH_DIR -name '*.php' -exec wc -L {} \; \
+ | awk -v min=$MIN_LENGTH '{if($1>min) print ;}' \
+ | sort -t ' ' -rnk1
+
