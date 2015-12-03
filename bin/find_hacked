@@ -6,5 +6,5 @@ MIN_LENGTH=${2:-10000}
 
 find $SEARCH_DIR -name '*.php' -exec wc -L {} \; \
  | awk -v min=$MIN_LENGTH '{if($1>min) print ;}' \
- | sort -t ' ' -rnk1
-
+ | sort -t ' ' -rnk1 \
+ | xargs -I{} bash -c 'if [ `grep -cF "{}" $HOME/safe_files` -ne 1 ]; then echo {}; fi'
