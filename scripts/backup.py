@@ -8,7 +8,7 @@ import sys
 import os
 sys.path.append('/home/mojowen/MoveIt')
 
-from models import Local
+from models.local import Local
 from models.mail import send_mail
 
 def strip_wp_grep(result):
@@ -36,7 +36,6 @@ for site in directories:
 
     try:
         local.cd('~/webapps/'+site)
-
         backup = directory+site+'.tar.bz2'
 
         is_wordpress = local.c('ls wp-config.php') == 'wp-config.php'
@@ -70,5 +69,5 @@ for site in directories:
         output += "Something went wrong with "+site+"\n"
 
 if len(output) > 0:
-    send_mail(output, "%s Report" % type_of_backup)
+    send_mail(output, "%s Backup Report" % type_of_backup.capitalize())
 
