@@ -1,7 +1,6 @@
 import xmlrpclib, json, time
 
 
-
 class WebFaction:
 
     base_domain = 'scottduncombe.com'
@@ -176,7 +175,7 @@ class WebFaction:
         # Do something about visiability to search engines
 
         # - Update admin email / password if requested
-        if not admin and self.default_wordpress_admin
+        if not admin and self.default_wordpress_admin:
             admin = self.default_wordpress_admin
 
         if admin:
