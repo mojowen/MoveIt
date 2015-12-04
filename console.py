@@ -1,3 +1,5 @@
+#!/usr/local/bin/python2.7
+
 from models.sites import Site
 from models.ssh import SSH
 from models.webfaction import WebFaction
