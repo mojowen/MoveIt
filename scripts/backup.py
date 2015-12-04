@@ -6,11 +6,10 @@
 import commands
 import sys
 import os
-sys.path.append(
-    os.path.abspath(os.path.join(os.path.dirname(__file__),
-	os.path.pardir)))
+sys.path.append('/home/mojowen/MoveIt')
 
 from models import Local
+from models.mail import send_mail
 
 def strip_wp_grep(result):
     if type(result) is list:
@@ -71,8 +70,5 @@ for site in directories:
         output += "Something went wrong with "+site+"\n"
 
 if len(output) > 0:
-    print output
+    send_mail(output, "%s Report" % type_of_backup)
 
-# IF ERROR OR WORDPRESS UPGRDATE
-    # print an output and mail it: http://stackoverflow.com/questions/5455684/cron-sending-output-to-file-then-emailing-file-to-me
-    # echo "hello world" | mail -s "Backup Report" srduncombe@gmail.com
