@@ -1,0 +1,7 @@
+#!/bin/sh
+
+SINCE=${1:-7}
+
+echo "Directories changed in last $SINCE days"
+
+find . -type f -name '*.php' -mtime -"$SINCE" -print | awk -F'/' '{print "/"$2;}' | uniq
