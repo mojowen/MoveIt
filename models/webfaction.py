@@ -202,9 +202,9 @@ class WebFaction:
         self.c('ln -s ~/shared/ng-forms ~/webapps/%s/wp-content/plugins/ng-forms' % name)
 
         if domain:
-            self.setup_googleapps(domain)
+            self.setup_googleapps(domain, '_spfprod.ngpvan.com')
 
-    def setup_googleapps(self,domain):
+    def setup_googleapps(self,domain, other_spf_domains=None):
         mx_records = [
             ['aspmx.l.google.com',1],
             ['alt1.aspmx.l.google.com',5],
@@ -227,14 +227,18 @@ class WebFaction:
         for override in dns_overrides:
             subdomain = override+'.'+domain
             self.server.create_domain(self.session_id, domain,  override)
-            self.server.create_dns_override( self.session_id,
-                subdomain,
-                '',
-                'ghs.google.com', # CNAME
-                '',
-                '',
-                ''
+            self.server.create_dns_override(self.session_id,
+                subdomain, '', 'ghs.google.com', # CNAME
+                '','', ''
             )
+
+        other_spf_domains = 'include:%s' % other_spf_domains if other_spf_domains else ''
+
+        self.server.create_dns_override(
+            self.session_id,
+            domain,
+            '', '', '', '',
+            'v=spf1 include:_spf.google.com %s~all' % other_spf_domains)
 
     # API for interfacing with WebFactions email:
     # http://docs.webfaction.com/xmlrpc-api/apiref.html#email
