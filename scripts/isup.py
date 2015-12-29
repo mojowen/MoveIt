@@ -36,13 +36,13 @@ def check_site(website, follow=True):
         return res
 
 for website in websites:
-	if website['name'] not in exceptions:
-		main_domain = website['subdomains'][0]
-		res = check_site(main_domain)
-		if res.status != 200:
-			output.append("%s at %s responded with a %d" % (website['name'],
-															main_domain,
-															res.status))
+    if website['name'] not in exceptions:
+        main_domain = website['subdomains'][0]
+        res = check_site(main_domain)
+        if res.status != 200:
+            output.append("%s at %s responded with a %d" % (website['name'],
+                                                            main_domain,
+                                                            res.status))
 
 if len(output) > 0:
     send_mail("\n".join(output), "Uptime Report")
