@@ -18,6 +18,7 @@ config.read(os.path.join(os.path.dirname(__file__), '../config/secrets.ini'))
 wf = WebFaction( config.get('webfaction', 'user'), config.get('webfaction', 'pass') )
 
 websites = wf.server.list_websites(wf.session_id)
+exceptions = ['hubbot']
 output = []
 
 def get_head(domain):
@@ -35,12 +36,13 @@ def check_site(website, follow=True):
         return res
 
 for website in websites:
-	main_domain = website['subdomains'][0]
-	res = check_site(main_domain)
-	if res.status != 200:
-		output.append("%s at %s responded with a %d" % (website['name'],
-														main_domain,
-										  				res.status))
+	if website['name'] not in exceptions:
+		main_domain = website['subdomains'][0]
+		res = check_site(main_domain)
+		if res.status != 200:
+			output.append("%s at %s responded with a %d" % (website['name'],
+															main_domain,
+															res.status))
 
 if len(output) > 0:
     send_mail("\n".join(output), "Uptime Report")
