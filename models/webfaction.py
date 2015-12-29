@@ -203,6 +203,17 @@ class WebFaction:
 
         if domain:
             self.setup_googleapps(domain, '_spfprod.ngpvan.com')
+            # Set up TXT Record for NGP VAN SPF
+            ngp_domain = 'ngpweb3._domainkey'
+            self.server.create_domain(self.session_id, domain, ngp_domain)
+            ngp_domain += '.%s' % site
+            key = ('v=DKIM1; k=rsa; n=1024; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCB'
+                   'iQKBgQD+FZRWRvxNzHH8gasWTJi4+bWRyDSMgEI7XOwAzUyrrvwz4QZ4lD'
+                   'tOwQVAmkqxUiyf5YkufT6+5h15wmR0f82JwqwT1vMjOUNS/Kausds5aBJi'
+                   'u2GFsIFrwXBUFf2Hp81yRzWQ56XoP+QTYJDk7Q3NRRGg17QfOZSDfPZCMI'
+                   'CFVwIDAQAB')
+            self.server.create_dns_override(self.session_id, ngp_domain, '', '', '', '', key)
+
 
     def setup_googleapps(self,domain, other_spf_domains=None):
         mx_records = [
