@@ -26,8 +26,8 @@ def create_multipart_from_html(html):
 	msg = MIMEMultipart('alternative')
 
 	text = " ".join(re.sub("<.*?>", " ", html).split())
-	part1 = MIMEText(text, 'plain')
-	part2 = MIMEText(html, 'html')
+	part1 = MIMEText(text.encode('utf-8'), 'plain', "utf-8")
+	part2 = MIMEText(html.encode('utf-8'), 'html', "utf-8")
 	msg.attach(part1)
 	msg.attach(part2)
 

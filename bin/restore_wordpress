@@ -38,8 +38,8 @@ if [ -f "$ACTIVE_DIR/wp-config.php" ]; then
 
 	# Running other scripts
 	find $ACTIVE_DIR/wp-content -maxdepth 1 -name '*.php' -delete
-	php $HOME/MoveIt/misc/plugin_restore.php all
-	php $HOME/MoveIt/misc/theme_upgrade.php
+	php56 $HOME/MoveIt/misc/plugin_restore.php all
+	php56 $HOME/MoveIt/misc/theme_upgrade.php
 	echo -e "<?php\n// Silence is golden.\n?>" > $ACTIVE_DIR/wp-content/index.php
 	echo -e "<?php\n// Silence is golden.\n?>" > $ACTIVE_DIR/wp-content/plugins/index.php
 	echo -e "<?php\n// Silence is golden.\n?>" > $ACTIVE_DIR/wp-content/themes/index.php

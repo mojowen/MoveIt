@@ -108,18 +108,9 @@ class WebFaction:
         for app in apps:
 
             if app['name'].find('wordpress') != -1:
+                self.wordpress_install = app['name']
 
-                try:
-                    version = int(app['name'].split('_')[1])
-                except: # Sometimes has non numerical names - like "wordpress_older"
-                    version = 0
-
-                # Making sure v3.5 > v 3.4.1
-                if version < 100: version = version * 10
-
-                if version > latest_version:
-                    latest_version = version
-                    self.wordpress_install = app['name']
+        return self.wordpress_install
 
     def list_users(self):
         users = self.server.list_users( self.session_id)
@@ -206,7 +197,7 @@ class WebFaction:
             # Set up TXT Record for NGP VAN SPF
             ngp_domain = 'ngpweb3._domainkey'
             self.server.create_domain(self.session_id, domain, ngp_domain)
-            ngp_domain += '.%s' % site
+            ngp_domain += '.%s' % ngp_domain
             key = ('v=DKIM1; k=rsa; n=1024; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCB'
                    'iQKBgQD+FZRWRvxNzHH8gasWTJi4+bWRyDSMgEI7XOwAzUyrrvwz4QZ4lD'
                    'tOwQVAmkqxUiyf5YkufT6+5h15wmR0f82JwqwT1vMjOUNS/Kausds5aBJi'
