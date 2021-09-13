@@ -32,7 +32,7 @@ foreach($themes as $plugin_dir => $plugin_details) {
 			'hook_extra' => array('plugin' => $plugin_dir )
 		));
 
-		echo "Updated ".$plugin_dir;
+		echo "Updated {$plugin_dir}\n";
 	}
 }
 

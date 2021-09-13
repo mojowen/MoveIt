@@ -4,7 +4,10 @@ CURRENT_DIR=.
 SEARCH_DIR=${1:-$CURRENT_DIR}
 MIN_LENGTH=${2:-10000}
 
-find $SEARCH_DIR -name '*.php' -exec wc -L {} \; \
+find $SEARCH_DIR -name '*.php' ! -wholename '*/wp-content/wflogs/*.php' -exec wc -L {} \; \
  | awk -v min=$MIN_LENGTH '{if($1>min) print ;}' \
  | sort -t ' ' -rnk1 \
  | xargs -I{} bash -c 'if [ `grep -cF "{}" $HOME/safe_files` -ne 1 ]; then echo {}; fi'
+
+grep -nliro --include=*.php '\@include "\\x' $SEARCH_DIR
+grep -nliro --include=*.php '\$GLOBALS\[\$GLOBALS' $SEARCH_DIR

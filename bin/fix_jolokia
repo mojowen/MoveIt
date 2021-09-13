@@ -3,7 +3,7 @@
 CURRENT_DIR=${PWD##*/}
 ACTIVE_DIR=$HOME/webapps/${1:-$CURRENT_DIR}/wp-content/themes/*olokia
 
-if [ -d $ACTIVE_DIR  ]; then
+if ls $ACTIVE_DIR 1> /dev/null 2>&1; then
 	cd $ACTIVE_DIR
 	rm -rf $ACTIVE_DIR/*
 	cp -r $HOME/shared/BusPress/jolokia/* $ACTIVE_DIR/

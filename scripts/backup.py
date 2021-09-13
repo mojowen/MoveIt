@@ -26,14 +26,13 @@ try:
 except:
     type_of_backup = 'daily'
 
-directory = '~/backup/'+type_of_backup+'/'
+directory = '$HOME/backup/'+type_of_backup+'/'
 
 directories = local.c('ls').split("\n")
 
 output = ''
 
 for site in directories:
-
     try:
         local.cd('~/webapps/'+site)
         backup = directory+site+'.tar.bz2'
@@ -44,12 +43,17 @@ for site in directories:
             password = strip_wp_grep( local.c('grep DB_PASSWORD wp-config.php') )
             user = strip_wp_grep( local.c('grep DB_USER wp-config.php') )
 
+            local.c('cp -rf wp-content $HOME/backup-wp-content-tmp-{}'.format(site))
+
             sql = ['mysqldump -u ',user,' --password='+password,user,' > wp-content/db-backup.sql']
             sql = " ".join(sql)
             local.c(sql)
 
+            local.c('rm wp-content/*/**.zip')
+            local.c('rm wp-content/*/**.gz')
             local.c('tar -jcvf '+backup+' wp-content')
-            local.c('rm wp-content/db-backup.sql')
+            local.c('rm -rf wp-content')
+            local.c('mv $HOME/backup-wp-content-tmp-{} wp-content'.format(site))
 
             php = ''' \
                   include_once("wp-load.php"); \

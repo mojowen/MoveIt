@@ -9,6 +9,7 @@ include_once("wp-load.php");
 include_once("wp-admin/includes/admin.php");
 include_once("wp-admin/includes/class-wp-upgrader.php");
 
+ob_start();
 $plugins = get_plugins();
 $upgrader = new WP_Upgrader();
 
@@ -37,18 +38,22 @@ if( $argv[1] == 'all' ) {
 	$current = get_site_transient('update_plugins');
 	$current = $current->response;
 }
+ob_end_clean();
 
 foreach($plugins as $plugin_dir => $plugin_details) {
 	$plugin_directory = untrailingslashit(WP_PLUGIN_DIR .'/'. plugin_dir_path($plugin_dir));
 	if( isset($current[$plugin_dir]) && ! is_link($plugin_directory) ) {
 		$plugin = (object) $current[$plugin_dir];
-		$result = $upgrader->run( array(
+		ob_start();
+        $result = $upgrader->run( array(
 			'package' => $plugin->package,
 			'destination' => WP_PLUGIN_DIR,
 			'clear_destination' => true,
 			'clear_working' => true,
 			'hook_extra' => array( 'plugin' => $plugin_dir )
 		));
+        ob_get_contents();
+        ob_end_clean();
 		echo "Updated {$plugin_dir}\n";
 	} else {
 		$reason = is_link($plugin_directory) ? "it's a sym link" : "can't find source";
